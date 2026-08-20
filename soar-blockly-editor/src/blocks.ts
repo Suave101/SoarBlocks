@@ -1,6 +1,5 @@
 import * as Blockly from 'blockly';
 
-// Explicit connection type constants
 const TYPE_CONDITION = 'Condition';
 const TYPE_APPLY_RULE = 'ApplyRule';
 const TYPE_ACTION = 'Action';
@@ -139,16 +138,3 @@ Blockly.common.defineBlocks({
   hardware_state,
   hardware_input,
 });
-
-export const toolbox = {
-  kind: 'flyoutToolbox',
-  contents: [
-    { kind: 'block', type: 'soar_wme_condition' },
-    { kind: 'block', type: 'soar_state_check' },
-    { kind: 'block', type: 'soar_propose_operator' },
-    { kind: 'block', type: 'soar_apply_rule' },
-    { kind: 'block', type: 'soar_set_output' },
-    { kind: 'block', type: 'hardware_state' },
-    { kind: 'block', type: 'hardware_input' },
-  ],
-};

@@ -3,16 +3,20 @@ import * as Blockly from 'blockly';
 import 'blockly/blocks';
 import { toolbox } from './toolbox';
 import './index.css';
+import { SoarGenerator } from './soarGenerator';
 
 function App() {
   const blocklyDivRef = useRef<HTMLDivElement | null>(null);
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
-  const [generatedCode, setGeneratedCode] = useState<string>('// Code generated from blocks will appear here...');
+  const [generatedCode, setGeneratedCode] = useState<string>(
+    '// Add blocks to generate Soar rules...'
+  );
 
   useEffect(() => {
     if (!blocklyDivRef.current || workspaceRef.current) return;
 
-    workspaceRef.current = Blockly.inject(blocklyDivRef.current, {
+    // Inject Blockly Workspace
+    const workspace = Blockly.inject(blocklyDivRef.current, {
       toolbox,
       toolboxPosition: 'start',
       collapse: true,
@@ -28,6 +32,29 @@ function App() {
       },
     });
 
+    workspaceRef.current = workspace;
+
+    // Function to run code generation and update state
+    const updateCode = () => {
+      const soarCode = SoarGenerator.workspaceToCode(workspace);
+      setGeneratedCode(
+        soarCode.trim() ? soarCode : '// Add blocks to generate Soar rules...'
+      );
+    };
+
+    // Real-time Event Listener: Updates generated code on block changes
+    const onWorkspaceChange = (event: Blockly.Events.Abstract) => {
+      // Ignore UI events (e.g. clicking, dragging canvas) to avoid redundant re-renders
+      if (event.isUiEvent) return;
+      updateCode();
+    };
+
+    workspace.addChangeListener(onWorkspaceChange);
+
+    // Initial code sync
+    updateCode();
+
+    // Handle Window Resize
     const handleResize = () => {
       if (workspaceRef.current) {
         Blockly.svgResize(workspaceRef.current);
@@ -38,7 +65,8 @@ function App() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      workspaceRef.current?.dispose();
+      workspace.removeChangeListener(onWorkspaceChange);
+      workspace.dispose();
       workspaceRef.current = null;
     };
   }, []);
@@ -69,13 +97,13 @@ function App() {
 
       <main className="main-content">
         <div id="blocklyDiv" ref={blocklyDivRef} className="blockly-container" />
-        
+
         <aside className="output-pane">
           <div className="pane-section">
             <div className="pane-header">Generated Code</div>
             <pre id="generatedCode"><code>{generatedCode}</code></pre>
           </div>
-          
+
           <div className="pane-section">
             <div className="pane-header">Console Output</div>
             <div id="output" className="output-console">
