@@ -72,14 +72,61 @@ const soar_apply_rule = {
     this.setHelpUrl('');
     this.setColour(0);
   }
-};                  
+};
+
+const soar_set_output = {
+  init: function(this: Blockly.Block) {
+    this.appendValueInput('hardware_input')
+    .setCheck('HardwareInput')
+      .appendField('Set Subsystem');
+    this.appendValueInput('hardware_state')
+    .setCheck('HardwareState')
+      .appendField('State to:');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('');
+    this.setHelpUrl('');
+    this.setColour(270);
+  }
+};
+
+const hardware_state = {
+  init: function(this: Blockly.Block) {
+    this.appendDummyInput('state_holder')
+      .appendField('Hardware State:')
+      .appendField(new Blockly.FieldTextInput('OPEN'), 'state');
+    this.setOutput(true, 'HardwareState');
+    this.setTooltip('');
+    this.setHelpUrl('');
+    this.setColour(180);
+  }
+};
+
+const hardware_input = {
+  init: function(this: Blockly.Block) {
+    this.appendDummyInput('hardware_input_holder')
+      .appendField('Hardware Input:')
+      .appendField(new Blockly.FieldDropdown([
+          ['CLAW', 'Claw'],
+          ['ARM', 'Arm'],
+          ['DRIVE_BASE', 'DriveBase']
+        ]), 'hardware_input');
+    this.setOutput(true, 'HardwareInput');
+    this.setTooltip('');
+    this.setHelpUrl('');
+    this.setColour(100);
+  }
+};
 
 Blockly.common.defineBlocks(
     {
         soar_state_check: soar_state_check,
         soar_wme_condition: soar_wme_condition,
         soar_propose_operator: soar_propose_operator,
-        soar_apply_rule: soar_apply_rule
+        soar_apply_rule: soar_apply_rule,
+        soar_set_output: soar_set_output,
+        hardware_state: hardware_state,
+        hardware_input: hardware_input
     }
 );
 
@@ -102,6 +149,18 @@ export const toolbox = {
     {
         kind: 'block',
         type: 'soar_apply_rule'
+    },
+    {
+        kind: 'block',
+        type: 'soar_set_output'
+    },
+    {
+        kind: 'block',
+        type: 'hardware_state'
+    },
+    {
+        kind: 'block',
+        type: 'hardware_input'
     }
   ]
 };

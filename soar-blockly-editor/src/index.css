@@ -1,0 +1,186 @@
+:root {
+  --fit-crimson: #770000;
+  --fit-crimson-dark: #500000;
+  --fit-gold: #AB946C;
+  --fit-gold-hover: #967e57;
+  --fit-silver: #9DA0A0;
+  --fit-dark: #1E1E24;
+  --fit-dark-secondary: #2A2A32;
+  --fit-light: #F4F5F7;
+  --fit-white: #FFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html, #root {
+  height: 100%;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--fit-light);
+  color: var(--fit-dark);
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Header Navbar */
+.app-header {
+  background-color: var(--fit-crimson);
+  color: var(--fit-white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-badge {
+  background-color: var(--fit-gold);
+  color: var(--fit-crimson-dark);
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.brand h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--fit-gold);
+  color: var(--fit-dark);
+}
+
+.btn-primary:hover {
+  background-color: var(--fit-gold-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--fit-white);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Workspace Layout */
+.main-content {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 58px);
+  overflow: hidden;
+}
+
+.blockly-container {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
+
+/* Right-side Output Panel */
+.output-pane {
+  width: 360px;
+  background-color: var(--fit-dark);
+  color: var(--fit-light);
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.pane-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.pane-header {
+  background-color: var(--fit-dark-secondary);
+  color: var(--fit-gold);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+pre#generatedCode {
+  flex: 1;
+  padding: 1rem;
+  overflow: auto;
+  font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  font-size: 0.85rem;
+  color: #A9DC76;
+  background-color: #121215;
+}
+
+.output-console {
+  flex: 1;
+  padding: 1rem;
+  overflow: auto;
+  font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  font-size: 0.85rem;
+  color: var(--fit-silver);
+  background-color: #16161a;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.console-placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  font-style: italic;
+}
+
+/* Blockly Visual Tweaks */
+.blocklyToolboxDiv {
+  background-color: var(--fit-dark-secondary) !important;
+  color: var(--fit-white) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.blocklyTreeLabel {
+  color: var(--fit-white) !important;
+  font-weight: 500 !important;
+}
+
+.blocklyFlyoutBackground {
+  fill: var(--fit-dark) !important;
+  fill-opacity: 0.95 !important;
+}
