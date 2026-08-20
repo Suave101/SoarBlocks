@@ -1,0 +1,40 @@
+html, body, #root {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+#pageContainer {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+#outputPane {
+  width: 36%;
+  min-width: 260px;
+  padding: 1rem;
+  box-sizing: border-box;
+  background: #f7f7f7;
+  border-right: 1px solid #ddd;
+}
+
+#generatedCode {
+  white-space: pre-wrap;
+  margin: 0 0 1rem;
+  min-height: 120px;
+}
+
+#blocklyDiv {
+  flex: 1;
+  position: relative;
+  min-height: 500px;
+  height: 100%;
+}
+
+.blocklySvg {
+  width: 100%;
+  height: 100%;
+}
