@@ -116,3 +116,69 @@ SoarGenerator.forBlock['soar_propose_operator'] = function (block: Blockly.Block
 
   return proposeRule + rhsApplications;
 };
+
+// Negated WME Condition
+SoarGenerator.forBlock['soar_wme_negated_condition'] = function (block: Blockly.Block) {
+  const wme =
+    SoarGenerator.valueToCode(block, 'WorkingMemoryElement', ORDER_ATOMIC) ||
+    'sensor';
+  const operator = block.getFieldValue('Operator');
+  const value =
+    SoarGenerator.valueToCode(block, 'Value', ORDER_ATOMIC) || 'true';
+
+  let matchExpression = value;
+  if (operator === '!=') {
+    matchExpression = `<> ${value}`;
+  } else if (operator !== '==') {
+    matchExpression = `${operator} ${value}`;
+  }
+
+  return `   - (<s> ^io.sensors.${wme} ${matchExpression})\n`;
+};
+
+// Operator Preference Generator
+SoarGenerator.forBlock['soar_preference'] = function (block: Blockly.Block) {
+  const prefType = block.getFieldValue('PREFERENCE_TYPE');
+  const targetOp = block.getFieldValue('OPERATOR_NAME') || 'TargetOp';
+
+  const prefSymbolMap: Record<string, string> = {
+    ACCEPTABLE: '+',
+    REJECT: '-',
+    REQUIRE: '!',
+    BETTER: '>',
+    WORSE: '<',
+  };
+
+  const symbol = prefSymbolMap[prefType] || '+';
+
+  return `   (<s> ^operator <o> ${symbol})\n   (<o> ^name ${targetOp})\n`;
+};
+
+// Elaboration Rule Generator
+SoarGenerator.forBlock['soar_elaboration_rule'] = function (block: Blockly.Block) {
+  const elabName = block.getFieldValue('ELAB_NAME') || 'default_elaboration';
+  const conditions = SoarGenerator.statementToCode(block, 'LHS');
+  const actions = SoarGenerator.statementToCode(block, 'RHS');
+
+  return (
+    `sp {elaborate*${elabName}\n` +
+    `   (state <s> ^type state)\n` +
+    `${conditions}` +
+    `-->\n` +
+    `${actions}` +
+    `}\n\n`
+  );
+};
+
+// Internal Working Memory (WME) Modification
+SoarGenerator.forBlock['soar_wme_modify'] = function (block: Blockly.Block) {
+  const actionType = block.getFieldValue('ACTION_TYPE');
+  const attribute =
+    SoarGenerator.valueToCode(block, 'ATTRIBUTE', ORDER_ATOMIC) || 'attribute';
+  const value =
+    SoarGenerator.valueToCode(block, 'VALUE', ORDER_ATOMIC) || 'value';
+
+  const symbol = actionType === 'ADD' ? '+' : '-';
+
+  return `   (<s> ^${attribute} ${value} ${symbol})\n`;
+};
